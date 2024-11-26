@@ -11,7 +11,7 @@ FROM ventas v
 JOIN categoria_de_producto cp ON v.id_categoria_de_producto = cp.id_categoria_de_producto
 GROUP BY cp.categoria_de_producto
 ORDER BY total_ingresos DESC;
-
+--_______________________________________________________________________________________________________________________________________________
 
 -- SEGUNDA VISTA: Crecimiento de ventas mensuales
 CREATE OR REPLACE VIEW vw_mensual_crecimiento_ventas AS
@@ -33,6 +33,7 @@ SELECT
     / LAG(total_mensual_ventas) OVER (ORDER BY year, month)) * 100, 2) AS crecimiento_porcentual
 FROM ventas_mensuales;
 
+--_______________________________________________________________________________________________________________________________________________
 -- TERCERA VISTA: Análisis de Retención de Clientes
 CREATE OR REPLACE VIEW vw_retencion_cliente AS
 SELECT 
@@ -44,6 +45,7 @@ FROM cliente c
 LEFT JOIN ventas v ON c.id_cliente = v.id_cliente
 GROUP BY c.estado;
 
+--_______________________________________________________________________________________________________________________________________________
 -- CUARTA VISTA: Desempeño del proveedor
 CREATE OR REPLACE VIEW vw_performance_vendedor AS
 SELECT 
@@ -58,6 +60,7 @@ JOIN ventas v ON vd.id_vendedor = v.id_vendedor
 GROUP BY vd.id_vendedor, vd.nombre_vendedor, vd.estado_vendedor
 ORDER BY total_ventas DESC;
 
+--_______________________________________________________________________________________________________________________________________________
 -- QUINTA VISTA: Análisis de quejas
 CREATE OR REPLACE VIEW vw_analisis_reclamos AS
 SELECT 
@@ -70,6 +73,7 @@ FROM postventa
 GROUP BY tipo_de_reclamo, estado_del_reclamo
 ORDER BY total_reclamos DESC;
 
+--_______________________________________________________________________________________________________________________________________________
 -- SEXTA VISTA: Rotación de Inventarios
 CREATE OR REPLACE VIEW vw_rotacion_inventarios AS
 SELECT 
