@@ -1,6 +1,11 @@
--- Procedimiento para insertar un nuevo producto
+
+USE elcuervopetshop;
+
+
+-- PRIMER PROCEDIMIENTO: INSERTAR UN NUEVO PRODUCTO
 DELIMITER //
-CREATE PROCEDURE InsertarProducto(
+DROP PROCEDURE IF EXISTS elcuervopetshop.InsertarProducto //
+CREATE PROCEDURE elcuervopetshop.InsertarProducto(
     IN p_id_factura_compra INT,
     IN p_id_categoria INT,
     IN p_nombre_producto VARCHAR(200),
@@ -24,9 +29,11 @@ BEGIN
     SELECT LAST_INSERT_ID() AS nuevo_producto_id;
 END //
 DELIMITER ;
+--______________________________________________________________________________________________________________________________________________________
 
--- Procedimiento para registrar una venta
+-- SEGUNDO PROCEDIMIENTO: REGISTRAR UNA NUEVA VENTA
 DELIMITER //
+DROP PROCEDURE IF EXISTS elcuervopetshop.RegistrarVenta //
 CREATE PROCEDURE RegistrarVenta(
     IN p_id_cliente INT,
     IN p_id_vendedor INT,
@@ -39,7 +46,7 @@ BEGIN
     DECLARE v_factura_id INT;
     DECLARE v_venta_id INT;
 
-    -- Insertar factura de venta
+    -- INSERTA DATOS DE LA FACTURA DE VENTA
     INSERT INTO facturas_de_venta (
         nombre_cliente, 
         detalle, 
@@ -55,7 +62,7 @@ BEGIN
     );
     SET v_factura_id = LAST_INSERT_ID();
 
-    -- Insertar venta
+    -- INSERTA LA VENTA
     INSERT INTO ventas (
         id_cliente, 
         id_vendedor, 
@@ -77,13 +84,15 @@ BEGIN
     );
     SET v_venta_id = LAST_INSERT_ID();
 
-    -- Retornar IDs de factura y venta
+    -- DEVUELVE ID's DE FACTURA Y VENTA 
     SELECT v_factura_id AS factura_id, v_venta_id AS venta_id;
 END //
 DELIMITER ;
 
--- Procedimiento para registrar un reclamo de postventa
+--______________________________________________________________________________________________________________________________________________________
+-- TERCER PROCEDIMIENTO: REGISTRAR UN RECLAMO POSTVENTA
 DELIMITER //
+DROP PROCEDURE IF EXISTS elcuervopetshop.RegistrarReclamo //
 CREATE PROCEDURE RegistrarReclamo(
     IN p_id_venta INT,
     IN p_nombre_cliente VARCHAR(200),
@@ -111,15 +120,16 @@ BEGIN
 END //
 DELIMITER ;
 
--- Procedimiento para actualizar stock de producto
+   -- ACTUALIZA EL STOCK DE PRODUCTO
 DELIMITER //
+DROP PROCEDURE IF EXISTS elcuervopetshop.ActualizarStock //
 CREATE PROCEDURE ActualizarStock(
     IN p_id_producto INT,
     IN p_id_centro_almacenamiento INT,
     IN p_cantidad INT
 )
 BEGIN
-    -- Actualizar stock existente o insertar nuevo registro
+    -- ACTUALIZA EL STOCK DE PRODUCTO EXISTENTE O NUEVO REGISTRO
     INSERT INTO stock (
         id_producto, 
         id_centro_de_almacenamiento, 
@@ -131,104 +141,62 @@ BEGIN
     ) ON DUPLICATE KEY UPDATE 
     cantidad_stock = cantidad_stock + p_cantidad;
 
-    -- Actualizar cantidad en tabla de productos
+    -- ACTUALIZAR TABLA DE PRODUCTOS
     UPDATE productos 
     SET cantidad = cantidad + p_cantidad 
     WHERE id_producto = p_id_producto;
 END //
 DELIMITER ;
 
--- Procedimiento para obtener ventas por vendedor
+--_____________________________________________________________________________________________________________________________________________________
+
+-- CUARTO PROCEDIMIENTO: OBTENER VENTAS POR VENDEDOR CON FILTROS
 DELIMITER //
-CREATE PROCEDURE ObtenerVentasPorVendedor(
-    IN p_id_vendedor INT,
-    IN p_fecha_inicio DATETIME,
-    IN p_fecha_fin DATETIME
+
+DROP PROCEDURE IF EXISTS elcuervopetshop.ObtenerDetallesVentaConVendedoresFiltrados //
+
+CREATE PROCEDURE ObtenerDetallesVentaConVendedoresFiltrados(
+    IN p_tipo_venta VARCHAR(10),
+    IN p_estado_vendedor VARCHAR(10),
+    IN p_min_cantidad INT,
+    IN p_max_cantidad INT
 )
 BEGIN
+    -- Asigna valores predeterminados si son NULL
+    IF p_min_cantidad IS NULL THEN
+        SET p_min_cantidad = 0;
+    END IF;
+    IF p_max_cantidad IS NULL THEN
+        SET p_max_cantidad = 1000000;
+    END IF;
+
     SELECT 
+        dv.id_detalle_de_venta,
+        dv.id_venta,
+        dv.id_producto,
+        dv.id_num_factura_venta,
+        dv.cantidad AS cantidad_vendida,
+        dv.precio AS precio_venta,
+        dv.descuento,
+        dv.subtotal,
+        dv.tipo_venta,
+        dv.nombre_cliente,
         v.id_vendedor,
-        ve.nombre_vendedor,
-        COUNT(v.id_venta) AS total_ventas,
-        SUM(v.total_venta) AS monto_total_ventas
-    FROM ventas v
-    JOIN vendedor ve ON v.id_vendedor = ve.id_vendedor
-    WHERE v.id_vendedor = p_id_vendedor
-    AND v.id_venta IN (
-        SELECT id_venta 
-        FROM facturas_de_venta 
-        WHERE fecha_compra BETWEEN p_fecha_inicio AND p_fecha_fin
-    )
-    GROUP BY v.id_vendedor, ve.nombre_vendedor;
+        v.nombre_vendedor,
+        v.cantidad_de_ventas,
+        v.estado_vendedor
+    FROM 
+        detalle_de_venta dv
+    LEFT JOIN 
+        ventas ve ON dv.id_venta = ve.id_venta
+    LEFT JOIN 
+        vendedor v ON ve.id_vendedor = v.id_vendedor
+    WHERE 
+        (p_tipo_venta IS NULL OR dv.tipo_venta = p_tipo_venta)
+        AND (p_estado_vendedor IS NULL OR v.estado_vendedor = p_estado_vendedor)
+        AND dv.cantidad BETWEEN p_min_cantidad AND p_max_cantidad
+    ORDER BY 
+        dv.id_detalle_de_venta;
 END //
-DELIMITER ;
 
--- Procedimiento para registrar nueva compra a proveedor
-DELIMITER //
-CREATE PROCEDURE RegistrarCompraProveedor(
-    IN p_nombre_proveedor VARCHAR(200),
-    IN p_id_producto INT,
-    IN p_id_categoria INT,
-    IN p_cantidad INT,
-    IN p_precio DECIMAL(10,2),
-    IN p_forma_pago ENUM("CONTADO","A 30 DIAS", "A 60 DIAS")
-)
-BEGIN
-    DECLARE v_factura_compra_id INT;
-    DECLARE v_subtotal DECIMAL(10,2);
-
-    -- Calcular subtotal
-    SET v_subtotal = p_cantidad * p_precio;
-
-    -- Insertar factura de compra
-    INSERT INTO facturas_de_compra (
-        nombre_proveedor, 
-        detalle, 
-        monto_bruto, 
-        impuestos, 
-        monto_neto
-    ) VALUES (
-        p_nombre_proveedor, 
-        'Compra de productos', 
-        v_subtotal, 
-        v_subtotal * 0.21, 
-        v_subtotal * 1.21
-    );
-    SET v_factura_compra_id = LAST_INSERT_ID();
-
-    -- Insertar proveedor
-    INSERT INTO proveedores (
-        id_producto, 
-        id_categoria_de_producto, 
-        numero_de_pedido, 
-        detalles, 
-        forma_de_pago, 
-        estado_del_pago
-    ) VALUES (
-        p_id_producto, 
-        p_id_categoria, 
-        v_factura_compra_id, 
-        'Compra de productos', 
-        p_forma_pago, 
-        'PENDIENTE'
-    );
-
-    -- Insertar detalle de compra
-    INSERT INTO detalle_de_compra (
-        id_numero_de_factura_de_compra, 
-        id_producto, 
-        cantidad, 
-        precio, 
-        subtotal
-    ) VALUES (
-        v_factura_compra_id, 
-        p_id_producto, 
-        p_cantidad, 
-        p_precio, 
-        v_subtotal
-    );
-
-    -- Retornar ID de factura
-    SELECT v_factura_compra_id AS factura_compra_id;
-END //
 DELIMITER ;
