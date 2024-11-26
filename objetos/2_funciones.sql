@@ -1,24 +1,26 @@
 USE elcuervopetshop;
 
-
 -- PRIMERA FUNCIÓN: Corroborar la disponibilidad de un producto
-DELIMITER-$$
-DROP FUNCTION IF EXISTS elcuervopetshop.verificar_disponibilidad_producto()
+
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS verificar_disponibilidad_producto $$
+
 CREATE FUNCTION verificar_disponibilidad_producto(
     producto_id INT,
     cantidad_deseada INT
 ) RETURNS VARCHAR(200)
+    READS SQL DATA
 BEGIN
     DECLARE stock_actual INT;
-    
-    -- Obtiene el stock actual del producto
 
+    -- Obtiene el stock actual del producto (asegurándose de que solo devuelva una fila)
     SELECT cantidad_stock INTO stock_actual
     FROM stock
-    WHERE id_producto = producto_id;
+    WHERE id_producto = producto_id
+    LIMIT 1;  -- Agregar LIMIT 1 para garantizar solo una fila
 
     -- Verifica si hay suficiente stock
-
     IF stock_actual >= cantidad_deseada THEN
         RETURN 'Stock disponible';
     ELSE
@@ -28,15 +30,26 @@ END$$
 
 DELIMITER ;
 
+
+-- Llamar a la función para probar
 SELECT verificar_disponibilidad_producto(1, 10);
 
+SELECT id_producto, COUNT(*) 
+FROM stock
+GROUP BY id_producto
+HAVING COUNT(*) > 1;
+
+--________________________________________________________________________________________________________________________________________________________________
 
 -- SEGUNDA FUNCIÓN: tiempo promedio en resolución de reclamos
 
 DELIMITER $$
 
+DROP FUNCTION IF EXISTS tiempo_promedio_resolucion_reclamos $$
+
 CREATE FUNCTION tiempo_promedio_resolucion_reclamos()
 RETURNS DECIMAL(10, 2)
+    READS SQL DATA
 BEGIN
     DECLARE promedio_resolucion DECIMAL(10, 2);
 
@@ -50,14 +63,20 @@ END$$
 
 DELIMITER ;
 
+-- Llamar a la función para probar
 SELECT tiempo_promedio_resolucion_reclamos();
 
+--________________________________________________________________________________________________________________________________________________________________
 
 --TERCERA FUNCIÓN: tasa de retención de clientes
+
 DELIMITER $$
+
+DROP FUNCTION IF EXISTS calcular_tasa_retencion_clientes $$
 
 CREATE FUNCTION calcular_tasa_retencion_clientes()
 RETURNS DECIMAL(10, 2)
+    READS SQL DATA
 BEGIN
     DECLARE total_clientes INT;
     DECLARE clientes_activos INT;
@@ -76,15 +95,22 @@ END$$
 
 DELIMITER ;
 
+-- Llamar a la función para probar
 SELECT calcular_tasa_retencion_clientes();
 
 
+--________________________________________________________________________________________________________________________________________________________________
+
 --CUARTA FUNCIÓN: vendedor con mayor cantidad de ventas ejecutadas
+
 
 DELIMITER $$
 
+DROP FUNCTION IF EXISTS vendedor_top_ventas $$
+
 CREATE FUNCTION vendedor_top_ventas()
 RETURNS VARCHAR(200)
+    READS SQL DATA
 BEGIN
     DECLARE nombre_vendedor_top VARCHAR(200);
 
@@ -100,6 +126,7 @@ END$$
 
 DELIMITER ;
 
+-- Llamar a la función para probar
 SELECT vendedor_top_ventas();
 
 
