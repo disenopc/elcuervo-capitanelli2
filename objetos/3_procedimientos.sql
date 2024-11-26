@@ -1,7 +1,6 @@
 
 USE elcuervopetshop;
 
-
 -- PRIMER PROCEDIMIENTO: INSERTAR UN NUEVO PRODUCTO
 DELIMITER //
 DROP PROCEDURE IF EXISTS elcuervopetshop.InsertarProducto //
