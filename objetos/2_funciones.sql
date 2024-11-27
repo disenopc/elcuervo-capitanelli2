@@ -2,7 +2,7 @@ USE elcuervopetshop;
 
 -- PRIMERA FUNCIÓN: CORROBORAR LA DISPONIBILIDAD DE UN PRODUCTO
 
-DELIMITER $$
+DELIMITER //
 
 DROP FUNCTION IF EXISTS verificar_disponibilidad_producto $$
 
@@ -43,7 +43,7 @@ HAVING COUNT(*) > 1;
 
 -- SEGUNDA FUNCIÓN: TIEMPO PROMEDIO DE RESOLUCIÓN DE RECLAMOS
 
-DELIMITER $$
+DELIMITER //
 
 DROP FUNCTION IF EXISTS tiempo_promedio_resolucion_reclamos $$
 
@@ -70,7 +70,7 @@ SELECT tiempo_promedio_resolucion_reclamos();
 
 --TERCERA FUNCIÓN: TASA DE RETENCIÓN DEL CLIENTE
 
-DELIMITER $$
+DELIMITER //
 
 DROP FUNCTION IF EXISTS calcular_tasa_retencion_clientes $$
 
@@ -104,7 +104,7 @@ SELECT calcular_tasa_retencion_clientes();
 --CUARTA FUNCIÓN: VENDEDOR CON MAYOR CANTIDAD DE VENTAS EJECUTADAS
 
 
-DELIMITER $$
+DELIMITER //
 
 DROP FUNCTION IF EXISTS vendedor_top_ventas $$
 
