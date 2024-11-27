@@ -54,3 +54,5 @@ BEGIN
         WHERE id_venta IN (SELECT id_venta FROM ventas WHERE id_cliente = v_cliente_id)) > 3 THEN
         UPDATE cliente
         SET estado = 'DEUDOR'
+        END//
+        DELIMITER ;
