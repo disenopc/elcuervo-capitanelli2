@@ -18,7 +18,7 @@ BEGIN
     SELECT cantidad_stock INTO stock_actual
     FROM stock
     WHERE id_producto = producto_id
-    LIMIT 1;  -- Agregar LIMIT 1 para garantizar solo una fila
+    LIMIT 1;  
 
     -- Verifica si hay suficiente stock
     IF stock_actual >= cantidad_deseada THEN

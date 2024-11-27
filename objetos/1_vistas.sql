@@ -1,7 +1,7 @@
 USE elcuervopetshop;
 
 -- PRIMERA VISTA: Total de Ingresos por categoría
-CREATE OR REPLACE VIEW vw_ingresos_por_categoria AS
+CREATE OR REPLACE VIEW vista_ingresos_por_categoria AS
 SELECT 
     cp.categoria_de_producto,
     SUM(v.total_venta) AS total_ingresos,
@@ -14,7 +14,7 @@ ORDER BY total_ingresos DESC;
 --_______________________________________________________________________________________________________________________________________________
 
 -- SEGUNDA VISTA: Crecimiento de ventas mensuales
-CREATE OR REPLACE VIEW vw_mensual_crecimiento_ventas AS
+CREATE OR REPLACE VIEW vista_mensual_crecimiento_ventas AS
 WITH ventas_mensuales AS (
     SELECT 
         YEAR(fecha_de_alta) AS year,
@@ -35,7 +35,7 @@ FROM ventas_mensuales;
 
 --_______________________________________________________________________________________________________________________________________________
 -- TERCERA VISTA: Análisis de Retención de Clientes
-CREATE OR REPLACE VIEW vw_retencion_cliente AS
+CREATE OR REPLACE VIEW vista_retencion_cliente AS
 SELECT 
     c.estado AS estado_cliente,
     COUNT(DISTINCT c.id_cliente) AS total_clientes,
@@ -47,7 +47,7 @@ GROUP BY c.estado;
 
 --_______________________________________________________________________________________________________________________________________________
 -- CUARTA VISTA: Desempeño del proveedor
-CREATE OR REPLACE VIEW vw_performance_vendedor AS
+CREATE OR REPLACE VIEW vista_performance_vendedor AS
 SELECT 
     vd.nombre_vendedor,
     vd.estado_vendedor,
@@ -62,7 +62,7 @@ ORDER BY total_ventas DESC;
 
 --_______________________________________________________________________________________________________________________________________________
 -- QUINTA VISTA: Análisis de quejas
-CREATE OR REPLACE VIEW vw_analisis_reclamos AS
+CREATE OR REPLACE VIEW vista_analisis_reclamos AS
 SELECT 
     tipo_de_reclamo,
     estado_del_reclamo,
@@ -75,7 +75,7 @@ ORDER BY total_reclamos DESC;
 
 --_______________________________________________________________________________________________________________________________________________
 -- SEXTA VISTA: Rotación de Inventarios
-CREATE OR REPLACE VIEW vw_rotacion_inventarios AS
+CREATE OR REPLACE VIEW vista_rotacion_inventarios AS
 SELECT 
     p.nombre_producto,
     cp.categoria_de_producto,
