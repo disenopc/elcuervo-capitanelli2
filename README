@@ -9,114 +9,72 @@ El fundamento del proyecto y paso a paso está explicado en el archivo "Base del
 
 
 
-# **El Cuervo Pet Shop - Sistema de Gestión**
+El Cuervo Pet Shop - Sistema de Gestión
 
 Bienvenido al repositorio del sistema de gestión para **El Cuervo Pet Shop**, un proyecto diseñado para simplificar y automatizar la administración de una tienda de mascotas. Este sistema se centra en la gestión eficiente de ventas, productos, clientes y vendedores mediante el uso de procedimientos almacenados en MySQL.
 
 ---
 
-## **Tabla de Contenidos**
+Tabla de Contenidos
 
 1. [Descripción del Proyecto](#descripción-del-proyecto)  
 2. [Características Principales](#características-principales)  
 3. [Instalación](#instalación)  
 4. [Uso](#uso)  
 5. [Estructura del Proyecto](#estructura-del-proyecto)  
-6. [Contribuciones](#contribuciones)  
-7. [Licencia](#licencia)  
+
+  
 
 ---
 
-## **Descripción del Proyecto**
+Descripción del Proyecto
 
 Este sistema tiene como objetivo centralizar y optimizar la gestión de datos para una tienda de mascotas. Está diseñado para manejar aspectos críticos como el registro y consulta de ventas, el seguimiento de productos, y la evaluación del desempeño de los vendedores. Además, el sistema incluye filtros avanzados que permiten realizar consultas específicas, adaptándose a diferentes necesidades empresariales.
 
 ---
 
-## **Características Principales**
+Características Principales
 
-- **Gestión de Ventas**:  
-  Permite consultar y analizar las ventas realizadas con diversos filtros, como el tipo de venta (online o presencial) y rangos de cantidades vendidas.  
+Gestión de Ventas
+Permite consultar y analizar las ventas realizadas con diversos filtros, como el tipo de venta (online o presencial) y rangos de cantidades vendidas.  
 
-- **Administración de Vendedores**:  
-  Soporte para analizar el estado de los vendedores (activos o inactivos), su desempeño y la cantidad de ventas que han realizado.  
+Administración de Vendedores
+Soporte para analizar el estado de los vendedores (activos o inactivos), su desempeño y la cantidad de ventas que han realizado.  
 
-- **Control de Productos y Clientes**:  
-  Incluye herramientas para organizar y consultar información sobre productos y clientes asociados a las ventas.  
+Control de Productos y Clientes
+Incluye herramientas para organizar y consultar información sobre productos y clientes asociados a las ventas.  
 
-- **Filtros Personalizables**:  
-  Los procedimientos almacenados permiten realizar consultas específicas según los criterios seleccionados, como tipo de venta, estado del vendedor o rangos de cantidades.  
+Filtros Personalizable
+Los procedimientos almacenados permiten realizar consultas específicas según los criterios seleccionados, como tipo de venta, estado del vendedor o rangos de cantidades.  
 
-- **Integración con MySQL**:  
-  Diseñado para aprovechar las capacidades de los procedimientos almacenados, optimizando el acceso a la información y reduciendo la carga en las aplicaciones externas.
-
----
-
-### **Entorno de Desarrollo**
-- Herramientas recomendadas:  
-  - **Visual Studio Code** (u otro editor de texto o IDE).  
-  - **Git** para gestionar el control de versiones.  
-
-### **Sistema Operativo**
-- Compatible con sistemas operativos Windows, Linux o macOS.  
+ntegración con MySQL
+Diseñado para aprovechar las capacidades de los procedimientos almacenados, optimizando el acceso a la información y reduciendo la carga en las aplicaciones externas.
 
 ---
 
-## **Instalación**
 
-1. **Clonar el repositorio**:  
-   Descarga el proyecto desde GitHub utilizando Git o descarga directamente el archivo ZIP desde la interfaz web.
+Uso
 
-2. **Configurar la base de datos**:  
-   Importa el archivo de la base de datos proporcionado en este repositorio utilizando herramientas como phpMyAdmin, Workbench o la línea de comandos de MySQL.
-
-3. **Asegurar la conexión al servidor**:  
-   Verifica que las credenciales de tu servidor MySQL estén configuradas correctamente para acceder a la base de datos.
-
-4. **Probar los procedimientos almacenados**:  
-   Ejecuta consultas de prueba para verificar que los procedimientos almacenados están funcionando correctamente y devuelven los resultados esperados.
-
----
-
-## **Uso**
-
-### **Consultas con Filtros**
+Consultas con Filtros
 El sistema permite realizar consultas avanzadas a través de procedimientos almacenados que admiten filtros como:  
-- **Tipo de Venta**: Diferenciando entre ventas presenciales y ventas online.  
-- **Estado del Vendedor**: Para identificar si los vendedores están activos o inactivos.  
-- **Rangos de Cantidad Vendida**: Permite limitar las consultas a intervalos específicos de cantidades.  
+- Tipo de Venta**: Diferenciando entre ventas presenciales y ventas online.  
+- Estado del Vendedor**: Para identificar si los vendedores están activos o inactivos.  
+- Rangos de Cantidad Vendida**: Permite limitar las consultas a intervalos específicos de cantidades.  
 
-### **Análisis de Desempeño**
+Análisis de Desempeño
 El sistema proporciona herramientas para analizar datos clave sobre los vendedores y su desempeño, incluyendo la cantidad total de ventas realizadas.
 
-### **Control de Productos y Clientes**
+Control de Productos y Clientes
 Organiza y consulta datos relevantes sobre los productos vendidos y los clientes asociados, proporcionando una visión integral de las operaciones.
 
 ---
 
-## **Estructura del Proyecto**
+Estructura del Proyecto
 
 El proyecto está organizado de la siguiente manera:  
 
-- **Base de Datos**: Contiene los scripts necesarios para la creación y configuración de la base de datos, así como los procedimientos almacenados.  
-- **Documentación**: Incluye el presente archivo README y otros recursos útiles, como diagramas de la base de datos (si están disponibles).  
-- **Scripts de Prueba**: Contiene consultas de ejemplo para probar los procedimientos almacenados y verificar su funcionamiento.
+- Base de Datos: Contiene los scripts necesarios para la creación y configuración de la base de datos, así como los procedimientos almacenados.  
+- Documentación: Incluye el presente archivo README y otros recursos útiles, como diagramas de la base de datos (si están disponibles).  
+- Scripts de Prueba: Contiene consultas de ejemplo para probar los procedimientos almacenados y verificar su funcionamiento.
 
 ---
-
-## **Contribuciones**
-
-Las contribuciones a este proyecto son bienvenidas. Si deseas colaborar:  
-1. Haz un fork del repositorio.  
-2. Crea una rama para tus cambios.  
-3. Realiza un pull request explicando tus contribuciones.  
-
----
-
-## **Licencia**
-
-Este proyecto está licenciado bajo los términos establecidos en el repositorio. Consulta el archivo `LICENSE` para más detalles.
-
----
-
-Este README se puede personalizar más según las necesidades específicas del proyecto. ¿Te gustaría añadir más detalles sobre algo en particular? 😊
