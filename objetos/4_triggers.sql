@@ -3,7 +3,7 @@ USE elcuervopetshop;
 --___________________________________________________________________________________________________________________________________________________
 -- PRIMER TRIGGER: OBJETIVO - ACTUALIZAR LA CANTIDAD DE VENTAS DE UN VENDEDOR DESPUÉS DE CADA VENTA.
 DELIMITER //
-CREATE TRIGGER after_sale_update_vendor_sales 
+CREATE TRIGGER actualizar_cantidad_postventa
 AFTER INSERT ON ventas
 FOR EACH ROW
 BEGIN
@@ -17,7 +17,7 @@ DELIMITER ;
 
 -- SEGUNDO TRIGGER: OBJETIVO - ACTUALIZAR STOCK DE PRODUCTOS DESPÚES DE CADA VENTA 
 DELIMITER //
-CREATE TRIGGER after_sale_update_product_stock
+CREATE TRIGGER actualizar_stock_postventa
 AFTER INSERT ON detalle_de_venta
 FOR EACH ROW
 BEGIN
@@ -37,7 +37,7 @@ DELIMITER ;
 
 -- TERCER TRIGGER: OBJETIVO - MANEJO DE RECLAMOS Y ACTUALIZACIÓN CONTADOR DE RECLAMOS DEL CLIENTE
 DELIMITER //
-CREATE TRIGGER after_complaint_update_client_complaints
+CREATE TRIGGER actualizar_stock_devolución
 AFTER INSERT ON postventa
 FOR EACH ROW
 BEGIN
